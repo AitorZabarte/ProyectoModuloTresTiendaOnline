@@ -1,0 +1,47 @@
+﻿@model ProyectoModuloTresTiendaOnline.Models.AppUser
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<h1>Mi Perfil</h1>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Apellidos)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Apellidos)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FechaDeNacimiento)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FechaDeNacimiento)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Foto)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Model.Foto" alt="imagen de perfil no disponible" height="350" width="350" />
+        </dd>
+    </dl>
+</div>

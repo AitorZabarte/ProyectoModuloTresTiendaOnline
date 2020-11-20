@@ -1,0 +1,106 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ProyectoModuloTresTiendaOnline.Data
+
+@inject UserManager<AppUser> UserManager
+@inject ApplicationDbContext _context
+@model IEnumerable<ProyectoModuloTresTiendaOnline.Models.Producto>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Camisetas</h1>
+<div style="display:inline-flex;width:100%;justify-content:space-between;margin-bottom:1em">
+    <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Filtros de Busqueda
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <form asp-action="index">
+                <label for="buscarTexto">Buscar</label>
+                <p><input type="search" name="buscarTexto"></p>
+                <label for="buscarPrecio">Buscar por Precio</label>
+                <p><input type="number" name="buscarPrecio"></p>
+                <p><input type="submit" value="Buscar" /></p>
+            </form>
+        </div>
+    </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="btn-group">         
+             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Elementos en la lista de pedidos
+             </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                @{ 
+                    bool fin=false;
+                }
+                @foreach (var item in Model)
+                {
+                    @foreach (var p in item.ProductoPedidos.Where(x => x.Pedido.AppUserId == UserManager.GetUserId(User)).Where(c => c.Pedido.PedidoFinalizado != "Finalizado"))
+                    {
+                        <p>
+                            <img src="@p.Producto.Imagen" alt="Imagen no disponible" height="40" width="40">
+                            @p.Producto.Nombre
+                        </p>
+                        <p><strong>Precio:</strong>@p.Producto.Precio</p>
+                        <p><strong>Cantidad:</strong>@p.CantidadProducto</p>
+                        @if (p.Pedido.PedidoFinalizado=="")
+                        {
+                            fin = true;
+                        }
+                    }
+                }
+                @if(fin)
+                {
+                <a class="btn btn-secondary" asp-controller="ProductoPedidos" asp-action="ConfirmarPedido">Confirmar Pedido</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+@if (User.IsInRole("admin"))
+{
+
+    <p>
+        <a asp-action="Create">Crear</a>
+    </p>
+}
+<div class="row" style="overflow-y:scroll;height:30em">
+    @foreach (var item in Model.OrderBy(x => new Random().Next()))
+    {
+        <div class="col-lg-2 col-sm-3 col-md-3 col-6">
+            <div class="card h-100" style="text-align:center">
+                <img src="@item.Imagen" alt="Imagen no disponible" class="card-img-top" style="height:250px">
+                <div class="card-body" style="text-align:center">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <h5 class="card-title">@item.Precio €</h5>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="Aniadir" asp-route-id="@item.Id" asp-route-cantidad="cantidad">
+                            <select name="cantidad" class="form-control">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary" asp-controller="Productos" asp-action="Aniadir" asp-route-id="@item.Id" asp-route-cantidad="cantidad">Añadir al pedido</button>
+                        </form>
+                    }
+
+                </div>
+                <div>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <p>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>|
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

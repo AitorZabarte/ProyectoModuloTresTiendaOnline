@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ProyectoModuloTresTiendaOnline.Models.ProductoPedido>
+@{
+    ViewData["Title"] = "ConfirmarPedido";
+}
+
+<h1>Confirmacion de Pedido</h1>
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-2 col-sm-3 col-md-3 col-6">
+            <div class="card h-100" style="text-align:center">
+                <img src="@item.Producto.Imagen" alt="Imagen no disponible" class="card-img-top" style="height:200px">
+                <div class="card-body" style="text-align:center">
+                    <h5 class="card-title">@item.Producto.Nombre</h5>
+                    <h5 class="card-title">@item.Producto.Precio</h5>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<form>
+<label for="direccion">Direccion de envio</label>
+<input name="direccion" />
+<button type="submit" class="btn btn-primary" asp-controller="ProductoPedidos" asp-action="CambiarDatosDelPedido" asp-route-direccion="direccion">Confirmar Pedido</button>
+</form>
+<a asp-controller="Productos" asp-action="Index">Volver</a>

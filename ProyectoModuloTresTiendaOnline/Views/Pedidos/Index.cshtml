@@ -1,0 +1,88 @@
+﻿@model IEnumerable<ProyectoModuloTresTiendaOnline.Models.Pedido>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Mis Pedidos</h1>
+@if(User.IsInRole("admin"))
+{
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Filtros de Busqueda
+</button>
+<div class="dropdown-menu dropdown-menu-right">
+    <form asp-action="index">
+        <label for="buscarFecha">Buscar por Fecha</label>
+        <p><input type="date" name="buscarFecha"></p>
+        <p><input type="submit" value="Buscar" /></p>
+    </form>
+</div>
+}
+<div  style="overflow-y:scroll;height:30em">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaDePedido)
+            </th>
+            <th>Productos</th>
+            <th>Precio Final</th>
+            <th>Confirmacion del pedido</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaDePedido)
+            </td>
+            <td>
+                @foreach (var pro in item.ProductoPedidos)
+                {
+                    <p>Nombre:@pro.Producto.Nombre</p>
+                    <p>Cantidad:@pro.CantidadProducto</p>
+                    <p>Precio:@pro.Producto.Precio €</p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioTotal) €
+            </td>
+            @if (item.PedidoFinalizado == "Finalizado")
+            {
+                <td>
+                    Pedido Confirmado
+                </td>
+            }
+            else
+            {
+                <td>
+                    <a asp-controller="ProductoPedidos" asp-action="ConfirmarPedido">Confirmar Pedido</a>
+                </td>
+            }
+            @if (User.IsInRole("admin"))
+            {
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+            }
+        </tr>
+}
+    </tbody>
+</table>
+</div>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<AppUser>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<AppUser> UserManager
+
+@{
+    ViewData["Title"] = "Dar Permiso";
+}
+<h1>Permisos</h1>
+@foreach (AppUser user in Model)
+{
+    bool isAdmin = await UserManager.IsInRoleAsync(user, "admin");
+    if (isAdmin)
+    {
+        <p>@user.UserName | <a asp-action="QuitarAdmin" asp-route-id="@user.Id">Quitar Admin</a></p>
+
+    }
+    else
+    {
+        <p>@user.UserName | <a asp-action="HacerAdmin" asp-route-id="@user.Id">Hacer Admin</a></p>
+    }
+}

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+    <ul class="navbar-nav">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            string Id = @UserManager.GetUserId(User);
+            <li class="nav-item">
+                <img src="@UserManager.Users.FirstOrDefault(z=>z.Id==Id).Foto" height="40" width="40" alt=" " />
+            </li>
+            <li class="nav-item">
+                <p class="nav-link text-dark"> @UserManager.GetUserName(User)</p>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CambiarDatos" asp-route-id="@Id">Cambiar datos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="MiPerfil" asp-route-id="@Id">Mi Perfil</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
+        }
+    </ul>

@@ -1,0 +1,51 @@
+﻿@model ProyectoModuloTresTiendaOnline.Models.AppUser
+
+@{
+    ViewData["Title"] = "CambiarDatos";
+}
+
+<h1>Cambiar Datos</h1>
+
+<h4>@User.Identity.Name</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CambiarDatos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Apellidos" class="control-label"></label>
+                <input asp-for="Apellidos" class="form-control" />
+                <span asp-validation-for="Apellidos" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Foto" class="control-label"></label>
+                <input asp-for="Foto" class="form-control" />
+                <span asp-validation-for="Foto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaDeNacimiento" class="control-label"></label>
+                <input type="date" asp-for="FechaDeNacimiento" class="form-control" />
+                <span asp-validation-for="FechaDeNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+        <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Manage/ChangePassword" title="Manage" asp-route-id="Id">Cambiar Contraseña</a>
+        <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Manage/Email" title="Manage" asp-route-id="Id">Cambiar Email</a>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-secondary" asp-action="Index">Volver</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,47 @@
+﻿@model ProyectoModuloTresTiendaOnline.Models.Producto
+
+@{
+    ViewData["Title"] = "Aniadir";
+}
+
+<h1>Producto Elegido</h1>
+
+<div>
+    <h4>Producto</h4>
+    <hr />
+    <p>
+
+        @Html.DisplayNameFor(model => model.Nombre):
+        @Html.DisplayFor(model => model.Nombre)
+    </p>
+    <p>
+
+        @Html.DisplayNameFor(model => model.Precio):
+        @Html.DisplayFor(model => model.Precio)
+    </p>
+    <p>
+
+        <img src="@Model.Imagen" alt="Imagen no disponible" style="height:200px; width:150px">
+
+    </p>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-action="Aniadir" asp-route-id="@Model.Id" asp-route-cantidad="cantidad">
+            <select name="cantidad" class="form-control">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+            </select>
+            <button type="submit" class="btn btn-primary" asp-controller="Productos" asp-action="Aniadir" asp-route-id="@Model.Id" asp-route-cantidad="cantidad">Añadir al pedido</button>
+        </form>
+    }
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
